@@ -1,0 +1,33 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react": "^6.0.3",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^3.1",
+        "tailwindcss": "^4.0.0",
+        "vite": "^8.0.0"
+    },
+    "dependencies": {
+        "@fontsource/cairo": "^5.2.7",
+        "@fontsource/montserrat": "^5.2.8",
+        "@fortawesome/fontawesome-free": "^7.3.1",
+        "@tiptap/core": "^3.27.1",
+        "@tiptap/extension-highlight": "^3.27.1",
+        "@tiptap/extension-image": "^3.27.1",
+        "@tiptap/extension-link": "^3.27.1",
+        "@tiptap/extension-placeholder": "^3.27.1",
+        "@tiptap/extension-text-align": "^3.27.1",
+        "@tiptap/extension-underline": "^3.27.1",
+        "@tiptap/pm": "^3.27.1",
+        "@tiptap/starter-kit": "^3.27.1",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7"
+    }
+}

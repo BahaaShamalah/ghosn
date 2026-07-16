@@ -1,0 +1,146 @@
+@layer base {
+    .gh-landing {
+        font-family: 'Montserrat', 'Cairo', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    html[dir='rtl'] .gh-landing {
+        font-family: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+    }
+}
+
+@keyframes ghosnPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(64, 97, 57, 0.32); }
+    50% { box-shadow: 0 0 0 12px rgba(64, 97, 57, 0); }
+}
+
+@keyframes ghosnSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes ghosnFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+}
+
+@keyframes ghosnGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes ghosnDrift {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(34px, -22px) scale(1.08); }
+    66% { transform: translate(-22px, 16px) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes ghosnKen {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+@keyframes ghosnBounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 9px); }
+}
+
+@keyframes ghosnPlayRing {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(242, 241, 234, 0.5); }
+    50% { box-shadow: 0 0 0 18px rgba(242, 241, 234, 0); }
+}
+
+@keyframes ghosnReveal {
+    from { opacity: 0; transform: translateY(26px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gh-animate-gradient { animation: ghosnGradient 18s ease infinite; }
+.gh-animate-float { animation: ghosnFloat 11s ease-in-out infinite; }
+.gh-animate-drift { animation: ghosnDrift 16s ease-in-out infinite; }
+.gh-animate-play-ring { animation: ghosnPlayRing 2.6s ease-in-out infinite; }
+.gh-scroll-cue { animation: ghosnBounce 2.2s ease-in-out infinite; }
+
+.gh-reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.gh-reveal--shown {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: ghosnReveal 0.7s ease both;
+}
+
+.gh-nav-link:hover {
+    color: #406139;
+    border-bottom: 2px solid #819562;
+}
+
+.gh-btn-primary {
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.gh-btn-primary:hover {
+    background: #6f8452;
+    transform: translateY(-3px);
+}
+
+.gh-btn-outline {
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.gh-btn-outline:hover {
+    background: #F7F6F0;
+    color: #406139;
+    transform: translateY(-3px);
+}
+
+.text-shadow-hero {
+    text-shadow: 0 2px 24px rgba(20, 30, 16, 0.35);
+}
+
+.gh-landing ::selection {
+    background: #BCCAA7;
+    color: #2c3327;
+}
+
+.gh-landing .gh-field-input {
+    width: 100%;
+    border-radius: 12px;
+    border: 1.5px solid #d3dcc2;
+    background: #F2F1EA;
+    padding: 13px 15px;
+    font-size: 14.5px;
+    color: #3a4234;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gh-landing .gh-field-input:focus {
+    border-color: #406139;
+    box-shadow: 0 0 0 3px rgba(64, 97, 57, 0.15);
+}
+
+.gh-landing textarea.gh-field-input {
+    resize: vertical;
+    min-height: 120px;
+}
+
+@media (max-width: 900px) {
+    .gh-desktop-nav,
+    .gh-desktop-donate {
+        display: none !important;
+    }
+
+    .gh-hamburger {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 901px) {
+    .gh-mobile-menu {
+        display: none !important;
+    }
+}

@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import './ghosn/fonts.css';
+@import './ghosn/landing.css';
+@import './ghosn/prose.css';
+@import './ghosn/react-landing.css';
+@import './ghosn/react-admin.css';
+@import './ghosn/admin-shell.css';
+@import './ghosn/internal-pages.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/react/landing/**/*.{js,jsx}';
+@source '../js/react/admin/**/*.{js,jsx}';
+
+@theme {
+    /* GHOSN brand typography */
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    --font-arabic: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+
+    /* GHOSN palette — ported from GHOSN-Relief-Landing.html tailwind.config */
+    --color-ghosn: #0c5a2e;
+    --color-ghosn-600: #0e6b36;
+    --color-ghosn-700: #0a4d27;
+    --color-ghosn-800: #073a1e;
+    --color-ghosn-900: #062c18;
+    --color-ghosn-ink: #072018;
+
+    --color-growth: #46a45b;
+    --color-growth-light: #79c389;
+    --color-growth-soft: #e3eedf;
+
+    --color-beige: #e7dac0;
+    --color-beige-deep: #d6c098;
+
+    --color-cream: #f4eee1;
+    --color-offwhite: #faf8f1;
+
+    --tracking-tightish: -0.02em;
+
+    --spacing-13: 3.25rem;
+}
