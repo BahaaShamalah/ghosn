@@ -33,6 +33,10 @@
     >
         @include('public.partials.header')
 
+        @hasSection('full-bleed-top')
+            @yield('full-bleed-top')
+        @endif
+
         <main class="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12">
             @yield('content')
         </main>

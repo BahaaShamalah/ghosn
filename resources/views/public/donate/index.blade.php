@@ -2,8 +2,8 @@
 
 @section('title', __('public.donate.checkout_title'))
 
-@section('content')
-    <section class="relative -mx-5 -mt-8 mb-8 overflow-hidden bg-gradient-to-br from-[#243619] via-[#3a5330] to-[#2f4327] md:-mx-8 md:-mt-12">
+@section('full-bleed-top')
+    <section class="relative w-full overflow-hidden bg-gradient-to-br from-[#243619] via-[#3a5330] to-[#2f4327]">
         <div class="relative z-[2] mx-auto max-w-[820px] px-6 py-14 text-center md:py-16">
             <h1 class="mx-auto mb-3 max-w-[640px] text-[clamp(2rem,4.6vw,3.125rem)] font-bold leading-tight text-[#F7F6F0] text-balance">
                 <span data-en="">{{ __('public.donate.checkout_title') }}</span>
@@ -15,7 +15,9 @@
             </p>
         </div>
     </section>
+@endsection
 
+@section('content')
     {{-- Campaign banner --}}
     @if (! empty($campaign))
         <div class="mb-6 rounded-2xl border border-growth/25 bg-growth-soft/35 px-5 py-4" data-reveal>
