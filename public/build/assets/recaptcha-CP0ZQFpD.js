@@ -1,0 +1,1 @@
+async function e(e=`submit`){let t=window.__GHOSN_GOOGLE__?.recaptchaSiteKey;if(!t||window.grecaptcha===void 0)return``;try{return await new Promise(e=>{window.grecaptcha.ready(e)}),await window.grecaptcha.execute(t,{action:e})}catch{return``}}export{e as getRecaptchaToken};
