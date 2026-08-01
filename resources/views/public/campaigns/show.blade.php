@@ -55,7 +55,9 @@
                     @endif
                 </div>
 
-                @php($campaignVideo = $campaign->videoEmbed())
+                @php
+                    $campaignVideo = $campaign->videoEmbed();
+                @endphp
                 @if ($campaignVideo['type'] === 'file' && $campaignVideo['file_url'])
                     <div class="gh-campaign-video gh-reveal-internal">
                         <video
