@@ -8,6 +8,7 @@ use App\Models\Media;
 use App\Models\Page;
 use App\Models\SocialLink;
 use App\Services\Settings\SettingsService;
+use App\Support\DonationSettings;
 use App\Support\PaymentSettings;
 use App\Support\SettingsHub;
 use App\Support\SettingsInput;
@@ -19,6 +20,7 @@ class SettingsController extends Controller
     public function __construct(
         private readonly SettingsService $settings,
         private readonly PaymentSettings $payments,
+        private readonly DonationSettings $donations,
     ) {}
 
     public function index(): View
@@ -50,6 +52,14 @@ class SettingsController extends Controller
             }
         }
 
+        if ($group === 'team') {
+            $page = Page::query()->where('slug', 'team')->first();
+
+            if ($page) {
+                return redirect()->route('admin.pages.show', $page);
+            }
+        }
+
         if (! view()->exists('admin.settings.groups.'.$group)) {
             abort(404);
         }
@@ -64,6 +74,9 @@ class SettingsController extends Controller
                 'stripe_configured' => $this->payments->stripeEnvConfigured(),
                 'paypal_configured' => $this->payments->paypalEnvConfigured(),
                 'paypal_webhook_configured' => $this->payments->paypalWebhookConfigured(),
+                'stripe_live' => $this->donations->stripeEnabled(),
+                'paypal_live' => $this->donations->paypalEnabled(),
+                'donations_enabled' => $this->donations->enabled(),
             ] : null,
             'socialLinks' => $group === 'social' ? SocialLink::query()->ordered()->get() : null,
             'socialPlatforms' => $group === 'social' ? \App\Support\SocialPlatform::definitions() : null,
@@ -181,6 +194,10 @@ class SettingsController extends Controller
             $payload['about.page'] = \App\Support\AboutPageInput::normalize($payload['about.page']);
         }
 
+        if ($group === 'team' && isset($payload['team.page']) && is_array($payload['team.page'])) {
+            $payload['team.page'] = \App\Support\TeamPageInput::normalize($payload['team.page']);
+        }
+
         if ($group === 'contact' && isset($payload['contact.page']) && is_array($payload['contact.page'])) {
             $payload['contact.page'] = \App\Support\ContactPageInput::normalize($payload['contact.page']);
         }
@@ -235,6 +252,16 @@ class SettingsController extends Controller
 
         if ($group === 'contact') {
             $page = Page::query()->where('slug', 'contact')->first();
+
+            if ($page) {
+                return redirect()
+                    ->route('admin.pages.show', $page)
+                    ->with('status', __('admin.settings.saved_group', ['group' => __("admin.settings.group_{$group}")]));
+            }
+        }
+
+        if ($group === 'team') {
+            $page = Page::query()->where('slug', 'team')->first();
 
             if ($page) {
                 return redirect()

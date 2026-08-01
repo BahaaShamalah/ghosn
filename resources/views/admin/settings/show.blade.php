@@ -32,3 +32,9 @@
         </div>
     </div>
 @endsection
+
+@if (in_array($group, ['about', 'team', 'contact'], true))
+    @push('scripts')
+        @include('admin.partials.cms-scripts')
+    @endpush
+@endif

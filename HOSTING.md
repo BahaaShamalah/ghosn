@@ -132,21 +132,47 @@ PAYPAL_WEBHOOK_ID=...    # مهم — بدونه لا تُحدَّث حالة ا
 
 ---
 
-## 6. أوامر ما بعد الرفع (مرة واحدة)
+## 6. PHP على Hostinger (مهم جداً)
 
-نفّذ من جذر المشروع على السيرفر:
+المشروع يتطلب **PHP >= 8.3**. على Hostinger غالباً:
+
+| المكان | ماذا تضبط |
+|--------|-----------|
+| hPanel → PHP Configuration | اختر **8.3** (للموقع في المتصفح) |
+| SSH / CLI | أمر `php` الافتراضي قد يكون **8.2** — استخدم مسار 8.3 صراحة |
+
+تحقق من CLI:
 
 ```bash
-composer install --no-dev --optimize-autoloader
-npm ci && npm run build
-php artisan migrate --force
-php artisan storage:link
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+php -v
+/opt/alt/php83/usr/bin/php -v
+ls /opt/alt/php*/usr/bin/php
 ```
 
-**صلاحيات الكتابة** (مستخدم الويب = www-data أو nginx):
+> استخدم دائماً `/opt/alt/php83/usr/bin/php` مع `artisan` و `composer` من SSH حتى لا يظهر خطأ:  
+> `Your Composer dependencies require a PHP version ">= 8.3.0"`.
+
+---
+
+## 6.b أوامر ما بعد الرفع (مرة واحدة)
+
+من جذر المشروع على السيرفر (مثال: مجلد `ghosnps` — تأكد بـ `pwd` ووجود ملف `artisan`):
+
+```bash
+/opt/alt/php83/usr/bin/php /usr/bin/composer install --no-dev --optimize-autoloader
+# أو إن كان composer.phar محلياً:
+# /opt/alt/php83/usr/bin/php composer.phar install --no-dev --optimize-autoloader
+
+npm ci && npm run build
+
+/opt/alt/php83/usr/bin/php artisan migrate --force
+/opt/alt/php83/usr/bin/php artisan storage:link
+/opt/alt/php83/usr/bin/php artisan config:cache
+/opt/alt/php83/usr/bin/php artisan route:cache
+/opt/alt/php83/usr/bin/php artisan view:cache
+```
+
+**صلاحيات الكتابة** (حسب المستخدم على الاستضافة):
 
 ```bash
 chmod -R ug+rwx storage bootstrap/cache
@@ -177,6 +203,9 @@ php artisan db:seed --class=RolePermissionSeeder
 | صفحة التواصل | Settings → Contact |
 | الصفحات القانونية | Settings → Legal pages |
 | صفحة فريقنا | Settings → Our Team page |
+| وسائل التواصل | Settings → Social |
+| الصفحة الرئيسية | Pages Builder |
+| المقالات والحملات | Admin → Posts / Campaigns |
 | **وضع الصيانة** | Settings → Maintenance |
 
 ---
@@ -185,15 +214,8 @@ php artisan db:seed --class=RolePermissionSeeder
 
 - المسار: **Settings → Maintenance** (`/admin/settings/maintenance`)
 - فعّل **Enable maintenance mode** لإظهار صفحة صيانة للزوار
-- **لوحة الأدmin** و **webhooks** و **`/up`** تبقى تعمل
+- **لوحة الأدمن** و **webhooks** و **`/up`** تبقى تعمل
 - عدّل العنوان والرسالة بالعربية والإنجليزية قبل التفعيل
-
----
-
-## 9. ما لا ترفع على الاستضافة
-| وسائل التواصل | Settings → Social |
-| الصفحة الرئيسية | Pages Builder |
-| المقالات والحملات | Admin → Posts / Campaigns |
 
 ---
 
@@ -227,21 +249,23 @@ php artisan db:seed --class=RolePermissionSeeder
 
 ## 11. Cron / Supervisor (مُوصى به)
 
-**Queue worker** (Supervisor):
+**Queue worker** (Supervisor) — استخدم مسار PHP 8.3 ومسار المشروع الفعلي:
 
 ```ini
 [program:ghosn-queue]
-command=php /path/to/ghosn-relief/artisan queue:work --sleep=3 --tries=3
+command=/opt/alt/php83/usr/bin/php /home/USER/ghosnps/artisan queue:work --sleep=3 --tries=3
 autostart=true
 autorestart=true
-user=www-data
+user=USER
 ```
 
 **Scheduler** (إن أضفت مهام مجدولة لاحقاً):
 
 ```cron
-* * * * * cd /path/to/ghosn-relief && php artisan schedule:run >> /dev/null 2>&1
+* * * * * cd /home/USER/ghosnps && /opt/alt/php83/usr/bin/php artisan schedule:run >> /dev/null 2>&1
 ```
+
+بدّل `USER` و`ghosnps` حسب حسابك ومجلد المشروع (`pwd` على السيرفر).
 
 ---
 
@@ -249,37 +273,101 @@ user=www-data
 
 - [ ] `APP_DEBUG=false` و `APP_URL` صحيح
 - [ ] SSL (HTTPS) يعمل على الدومين
+- [ ] PHP في hPanel = **8.3** و CLI عبر `/opt/alt/php83/usr/bin/php`
 - [ ] **SEO / مشاركة الروابط:** من `/admin/settings/seo` — عنوان، نبذة، وصورة (1200×630). يجب أن يكون `APP_URL` بـ `https://` حتى تظهر الصورة على واتساب (روابط مطلقة)
 - [ ] قاعدة البيانات مهاجرة
 - [ ] `storage:link` + صلاحيات `storage/` و `bootstrap/cache/`
 - [ ] `npm run build` — الموقع يحمّل CSS/JS من `public/build/`
 - [ ] البريد SMTP مُختبر (أرسل رسالة من `/contact`)
 - [ ] Queue worker يعمل
-- [ ] إيميلات الأدmin مضبوطة في Settings
+- [ ] إيميلات الأدمن مضبوطة في Settings
 - [ ] Stripe/PayPal live + webhooks (إن مُفعّل)
 - [ ] حساب أدمن حقيقي بكلمة مرور قوية — **بدون** seed محلي
 - [ ] جرّب: تبرع، تواصل، تطوّع، دخول أدمن
 
 ---
 
-## 13. دعم وصيانة
+## 13. تحديث الموقع (محلي → GitHub → السيرفر)
+
+### أ) من جهازك المحلي (Windows / PowerShell)
+
+```powershell
+cd c:\laragon\www\ghosn-relief
+
+git status
+git pull origin main
+
+git add .
+# تجنّب رفع ملفات غير ضرورية مثل public/build.zip إن وُجدت:
+# git reset HEAD public/build.zip
+
+git commit -m "Describe your change"
+git push origin main
+```
+
+### ب) على السيرفر (SSH — من جذر المشروع)
+
+تأكد أولاً أنك داخل المجلد الصحيح (يجب أن ترى ملف `artisan`):
 
 ```bash
-# تحديث الكود بعد git pull
-composer install --no-dev --optimize-autoloader
-npm ci && npm run build
-php artisan migrate --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan queue:restart
+pwd
+ls artisan
 ```
+
+ثم حدّث الكود والاعتماديات والكاش:
+
+```bash
+git pull origin main
+
+/opt/alt/php83/usr/bin/php /usr/bin/composer install --no-dev --optimize-autoloader
+
+/opt/alt/php83/usr/bin/php artisan migrate --force
+
+/opt/alt/php83/usr/bin/php artisan config:clear
+/opt/alt/php83/usr/bin/php artisan cache:clear
+/opt/alt/php83/usr/bin/php artisan view:clear
+/opt/alt/php83/usr/bin/php artisan route:clear
+
+/opt/alt/php83/usr/bin/php artisan config:cache
+/opt/alt/php83/usr/bin/php artisan route:cache
+/opt/alt/php83/usr/bin/php artisan view:cache
+
+/opt/alt/php83/usr/bin/php artisan queue:restart
+```
+
+إذا تغيّر CSS/JS (Vite):
+
+```bash
+npm ci
+npm run build
+```
+
+### ج) مسح وإعادة بناء الكاش فقط (بدون pull)
+
+```bash
+/opt/alt/php83/usr/bin/php artisan config:clear
+/opt/alt/php83/usr/bin/php artisan cache:clear
+/opt/alt/php83/usr/bin/php artisan view:clear
+/opt/alt/php83/usr/bin/php artisan route:clear
+/opt/alt/php83/usr/bin/php artisan config:cache
+/opt/alt/php83/usr/bin/php artisan route:cache
+/opt/alt/php83/usr/bin/php artisan view:cache
+```
+
+### د) ملاحظات شائعة
+
+| المشكلة | الحل |
+|---------|------|
+| `Could not open input file: /opt/ghosn-relief/artisan` | مسار المشروع غلط — ادخل مجلد المشروع (`ghosnps` مثلاً) واستخدم `php artisan` أو المسار الكامل لـ `artisan` هناك |
+| `PHP version ">= 8.3.0". You are running 8.2.x` | لا تستخدم `php` العادي — استخدم `/opt/alt/php83/usr/bin/php` |
+| خطأ Blade قديم بعد الإصلاح | `git pull` ثم `view:clear` و`view:cache` |
+| تعديل محلي ما ظهر على الموقع | تأكد أنك عملت `commit` + `push` ثم `git pull` على السيرفر |
 
 ```bash
 # فحص أمان الحزم
-composer audit
+/opt/alt/php83/usr/bin/php /usr/bin/composer audit
 ```
 
 ---
 
-*آخر مراجعة: تجهيز ما قبل الإنتاج — GHOSN Relief Team*
+*آخر مراجعة: أوامر التحديث على Hostinger + PHP 8.3 CLI — GHOSN Relief Team*

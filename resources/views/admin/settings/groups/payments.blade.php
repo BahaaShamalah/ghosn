@@ -6,7 +6,11 @@
     @include('admin.settings.partials.form-errors', ['group' => 'payments'])
 
     <div class="rounded-2xl border border-amber-200/80 bg-amber-50/60 px-4 py-3 text-sm text-amber-950">
-        {{ __('admin.settings.payments_env_notice') }}
+        <p>{{ __('admin.settings.payments_env_notice') }}</p>
+        <p class="mt-2 font-medium">{{ __('admin.settings.payments_enable_notice') }}</p>
+        @if (empty($paymentEnv['donations_enabled']))
+            <p class="mt-2 font-semibold text-amber-950">{{ __('admin.settings.payments_donations_disabled_notice') }}</p>
+        @endif
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -35,7 +39,10 @@
     <div class="rounded-2xl border border-ghosn/10 bg-cream/30 p-5">
         <div class="flex flex-wrap items-start justify-between gap-3">
             <h3 class="text-sm font-bold text-ghosn">{{ __('admin.settings.payments_stripe_heading') }}</h3>
-            @include('admin.settings.partials.env-status', ['configured' => $paymentEnv['stripe_configured']])
+            <div class="flex flex-wrap items-center gap-2">
+                @include('admin.settings.partials.env-status', ['configured' => $paymentEnv['stripe_configured']])
+                @include('admin.settings.partials.live-status', ['live' => $paymentEnv['stripe_live'] ?? false])
+            </div>
         </div>
         <div class="mt-4 grid gap-4 sm:grid-cols-2">
             <div class="flex items-center gap-3 sm:col-span-2">
@@ -43,6 +50,9 @@
                 <input type="checkbox" id="payments_stripe_enabled" name="payments[stripe_enabled]" value="1" @checked(old('payments.stripe_enabled', $settings['payments.stripe_enabled'])) class="rounded border-ghosn/25 text-ghosn focus:ring-ghosn">
                 <label for="payments_stripe_enabled" class="text-sm font-medium text-ghosn-ink/80">{{ __('admin.settings.payments_stripe_enabled') }}</label>
             </div>
+            @if (($paymentEnv['stripe_configured'] ?? false) && empty($settings['payments.stripe_enabled']))
+                <p class="sm:col-span-2 text-xs font-medium text-amber-800">{{ __('admin.settings.payments_toggle_required') }}</p>
+            @endif
             <div><label class="mb-1.5 block text-sm font-medium text-ghosn-ink/80">{{ __('admin.settings.payments_stripe_product_name') }}</label><input type="text" name="payments[stripe_product_name]" value="{{ old('payments.stripe_product_name', $settings['payments.stripe_product_name']) }}" class="ghosn-input"></div>
             <div><label class="mb-1.5 block text-sm font-medium text-ghosn-ink/80">{{ __('admin.settings.payments_stripe_product_description') }}</label><input type="text" name="payments[stripe_product_description]" value="{{ old('payments.stripe_product_description', $settings['payments.stripe_product_description']) }}" class="ghosn-input"></div>
         </div>
@@ -55,7 +65,10 @@
                 <h3 class="text-sm font-bold text-ghosn">{{ __('admin.settings.payments_paypal_heading') }}</h3>
                 <p class="mt-1 text-xs text-ghosn-ink/55">{{ __('admin.settings.payments_paypal_checkout_status') }}</p>
             </div>
-            @include('admin.settings.partials.env-status', ['configured' => $paymentEnv['paypal_configured']])
+            <div class="flex flex-wrap items-center gap-2">
+                @include('admin.settings.partials.env-status', ['configured' => $paymentEnv['paypal_configured']])
+                @include('admin.settings.partials.live-status', ['live' => $paymentEnv['paypal_live'] ?? false])
+            </div>
         </div>
         <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ghosn/10 bg-offwhite/70 px-4 py-3">
             <div>
@@ -70,6 +83,9 @@
                 <input type="checkbox" id="payments_paypal_enabled" name="payments[paypal_enabled]" value="1" @checked(old('payments.paypal_enabled', $settings['payments.paypal_enabled'])) class="rounded border-ghosn/25 text-ghosn focus:ring-ghosn">
                 <label for="payments_paypal_enabled" class="text-sm font-medium text-ghosn-ink/80">{{ __('admin.settings.payments_paypal_enabled') }}</label>
             </div>
+            @if (($paymentEnv['paypal_configured'] ?? false) && empty($settings['payments.paypal_enabled']))
+                <p class="sm:col-span-2 text-xs font-medium text-amber-800">{{ __('admin.settings.payments_toggle_required') }}</p>
+            @endif
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-ghosn-ink/80">{{ __('admin.settings.payments_paypal_mode') }}</label>
                 <select name="payments[paypal_mode]" class="ghosn-input">

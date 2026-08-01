@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Media;
 use App\Services\Settings\SettingsService;
 
 class TeamPageContent
@@ -76,7 +77,10 @@ class TeamPageContent
                     'en' => (string) ($leader['bio_en'] ?? ''),
                     'ar' => (string) ($leader['bio_ar'] ?? ''),
                 ],
-                'imageUrl' => (string) ($leader['image_url'] ?? ''),
+                'imageUrl' => self::resolveImageUrl(
+                    $leader['image_media_id'] ?? null,
+                    (string) ($leader['image_url'] ?? ''),
+                ),
                 'linkedinUrl' => (string) ($leader['linkedin_url'] ?? ''),
                 'xUrl' => (string) ($leader['x_url'] ?? ''),
                 'email' => (string) ($leader['email'] ?? ''),
@@ -116,6 +120,14 @@ class TeamPageContent
         $cta = $data['cta'] ?? [];
 
         return [
+            'sections' => [
+                'hero' => (bool) ($data['sections']['hero'] ?? true),
+                'stats' => (bool) ($data['sections']['stats'] ?? true),
+                'leadership' => (bool) ($data['sections']['leadership'] ?? true),
+                'departments' => (bool) ($data['sections']['departments'] ?? true),
+                'culture' => (bool) ($data['sections']['culture'] ?? true),
+                'cta' => (bool) ($data['sections']['cta'] ?? true),
+            ],
             'hero' => [
                 'eyebrow' => $pair('eyebrow_en', 'eyebrow_ar', $hero),
                 'title' => $pair('title_en', 'title_ar', $hero),
@@ -138,7 +150,10 @@ class TeamPageContent
                 'eyebrow' => $pair('eyebrow_en', 'eyebrow_ar', $culture),
                 'title' => $pair('title_en', 'title_ar', $culture),
                 'body' => $pair('body_en', 'body_ar', $culture),
-                'imageUrl' => (string) ($culture['image_url'] ?? ''),
+                'imageUrl' => self::resolveImageUrl(
+                    $culture['image_media_id'] ?? null,
+                    (string) ($culture['image_url'] ?? ''),
+                ),
                 'points' => $culturePoints,
             ],
             'cta' => [
@@ -150,5 +165,18 @@ class TeamPageContent
                 'secondaryUrl' => SiteChrome::resolveHref((string) ($cta['secondary_url'] ?? '/contact')),
             ],
         ];
+    }
+
+    private static function resolveImageUrl(mixed $mediaId, string $fallbackUrl = ''): string
+    {
+        if (! empty($mediaId)) {
+            $media = Media::query()->find((int) $mediaId);
+
+            if ($media) {
+                return $media->url();
+            }
+        }
+
+        return trim($fallbackUrl);
     }
 }

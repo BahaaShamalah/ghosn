@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sections' => [
+        'hero' => true,
+        'stats' => true,
+        'leadership' => true,
+        'departments' => true,
+        'culture' => true,
+        'cta' => true,
+    ],
     'hero' => [
         'eyebrow_en' => 'The people behind GHOSN',
         'eyebrow_ar' => 'الأشخاص خلف غُصن',
@@ -31,7 +39,7 @@ return [
             'role_ar' => 'المؤسّس والمدير',
             'bio_en' => 'Founded GHOSN in 2018 with a single food-basket drive. Leads strategy and partnerships across all programs.',
             'bio_ar' => 'أسّس غُصن عام ٢٠١٨ بحملة سلال غذاء واحدة. يقود الاستراتيجية والشراكات في جميع البرامج.',
-            'image_url' => '',
+            'image_media_id' => null,
             'linkedin_url' => '',
             'x_url' => '',
             'email' => '',
@@ -43,7 +51,7 @@ return [
             'role_ar' => 'مسؤولة البرامج',
             'bio_en' => 'Designs and oversees our relief programs, from clean water to education, always in step with communities.',
             'bio_ar' => 'تصمّم برامج الإغاثة وتشرف عليها، من المياه النظيفة إلى التعليم، دائمًا بالتناغم مع المجتمعات.',
-            'image_url' => '',
+            'image_media_id' => null,
             'linkedin_url' => '',
             'x_url' => '',
             'email' => '',
@@ -55,7 +63,7 @@ return [
             'role_ar' => 'العمليات الميدانية',
             'bio_en' => 'Coordinates logistics and on-the-ground delivery so aid reaches families quickly and with dignity.',
             'bio_ar' => 'ينسّق اللوجستيات والتسليم الميداني لتصل المساعدات إلى الأسر بسرعةٍ وكرامة.',
-            'image_url' => '',
+            'image_media_id' => null,
             'linkedin_url' => '',
             'x_url' => '',
             'email' => '',
@@ -67,7 +75,7 @@ return [
             'role_ar' => 'المجتمع والتواصل',
             'bio_en' => 'Builds the volunteer network and keeps donors close to the impact their giving creates.',
             'bio_ar' => 'تبني شبكة المتطوعين وتُبقي المتبرّعين قريبين من الأثر الذي يصنعه عطاؤهم.',
-            'image_url' => '',
+            'image_media_id' => null,
             'linkedin_url' => '',
             'x_url' => '',
             'email' => '',
@@ -122,7 +130,7 @@ return [
         'title_ar' => 'فريقٌ يسير إلى جانبك',
         'body_en' => 'We are volunteers, organizers and neighbors first. What unites us is a belief that relief works best when it is close, respectful, and built to last.',
         'body_ar' => 'نحن متطوعون ومنظّمون وجيران قبل كل شيء. يوحّدنا إيمانٌ بأن الإغاثة تنجح حين تكون قريبةً ومحترمةً وباقية.',
-        'image_url' => '',
+        'image_media_id' => null,
         'points' => [
             ['title_en' => 'Community-led', 'title_ar' => 'يقوده المجتمع', 'body_en' => 'Local voices guide every decision we make.', 'body_ar' => 'الأصوات المحلية توجّه كل قرار نتخذه.'],
             ['title_en' => 'Learning together', 'title_ar' => 'نتعلّم معًا', 'body_en' => 'Training and mentorship at every level.', 'body_ar' => 'تدريب وإرشاد على كل المستويات.'],
